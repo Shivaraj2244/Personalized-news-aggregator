@@ -1,40 +1,38 @@
-\# Personalized News Aggregator
-
-
+Personalized News Aggregator
 
 A Django-based web application that fetches and displays personalized news using an API.
 
 
 
-\## 🚀 Features
+Features
 
-\- Fetch latest news using API
+1) Fetch latest news using API
 
-\- Categorized news display
+2) Categorized news display
 
-\- Simple and clean UI
-
-
-
-\## 🛠 Tech Stack
-
-\- Python
-
-\- Django
-
-\- SQLite
-
-\- HTML/CSS
+3) Simple and clean UI
 
 
 
-\## ▶️ How to Run
+Tech Stack
 
-1\. Clone the repository
+1) Python
 
-2\. Install requirements
+2) Django
 
-3\. Run:
+3) SQLite
+
+4) HTML/CSS
+
+
+
+How to Run
+
+1) Clone the repository
+
+2) Install requirements
+
+3) Run:
 
 &nbsp;  python manage.py runserver
 
