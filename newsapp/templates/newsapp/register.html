@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f9fa; text-align: center; }
+    form { display:inline-block; margin-top:40px; background:#fff; padding:25px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+    input { display:block; margin:10px auto; padding:10px; width:250px; border-radius:8px; border:1px solid #ccc; }
+    button { background:#28a745; color:white; border:none; padding:10px 25px; border-radius:8px; cursor:pointer; }
+    button:hover { background:#1f7a33; }
+    .show-pass { cursor:pointer; color:#007bff; font-size:13px; margin-top:-8px; margin-bottom:10px; }
+    a { text-decoration:none; color:#007bff; }
+    .messages { color:red; margin-top:10px; }
+  </style>
+</head>
+<body>
+  <h1>🧾 Register</h1>
+
+  {% if messages %}
+    <div class="messages">
+      {% for msg in messages %}
+        <p>{{ msg }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="email" name="email" placeholder="Email" required>
+
+    <input type="password" id="password1" name="password1" placeholder="Password" required>
+    <span class="show-pass" onclick="togglePassword('password1', this)">👁️ Show Password</span>
+
+    <input type="password" id="password2" name="password2" placeholder="Confirm Password" required>
+    <span class="show-pass" onclick="togglePassword('password2', this)">👁️ Show Password</span>
+
+    <button type="submit">Register</button>
+  </form>
+
+  <p>Already have an account? <a href="/login/">Login here</a></p>
+
+  <script>
+    function togglePassword(id, el) {
+      const passField = document.getElementById(id);
+      if (passField.type === "password") {
+        passField.type = "text";
+        el.textContent = "🙈 Hide Password";
+      } else {
+        passField.type = "password";
+        el.textContent = "👁️ Show Password";
+      }
+    }
+  </script>
+</body>
+</html>

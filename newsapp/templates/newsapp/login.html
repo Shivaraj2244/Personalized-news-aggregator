@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f9fa; text-align: center; }
+    form { display:inline-block; margin-top:60px; background:#fff; padding:25px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+    input { display:block; margin:10px auto; padding:10px; width:250px; border-radius:8px; border:1px solid #ccc; }
+    button { background:#007bff; color:white; border:none; padding:10px 25px; border-radius:8px; cursor:pointer; }
+    button:hover { background:#0056b3; }
+    .show-pass { cursor:pointer; color:#007bff; font-size:13px; margin-top:-8px; margin-bottom:10px; }
+    a { text-decoration:none; color:#007bff; }
+    .messages { color:red; margin-top:10px; }
+  </style>
+</head>
+<body>
+  <h1>🔐 Login</h1>
+
+  {% if messages %}
+    <div class="messages">
+      {% for msg in messages %}
+        <p>{{ msg }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="password" id="password" name="password" placeholder="Password" required>
+    <span class="show-pass" onclick="togglePassword()">👁️ Show Password</span>
+    <button type="submit">Login</button>
+  </form>
+
+  <p>Don’t have an account? <a href="/register/">Register here</a></p>
+
+  <script>
+    function togglePassword() {
+      const passField = document.getElementById("password");
+      const btn = document.querySelector(".show-pass");
+      if (passField.type === "password") {
+        passField.type = "text";
+        btn.textContent = "🙈 Hide Password";
+      } else {
+        passField.type = "password";
+        btn.textContent = "👁️ Show Password";
+      }
+    }
+  </script>
+</body>
+</html>

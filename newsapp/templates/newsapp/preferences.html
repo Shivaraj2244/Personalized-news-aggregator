@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Preferences</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    form {
+      display: inline-block;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    select {
+      padding: 8px;
+      width: 250px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    button {
+      margin-top: 15px;
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    a {
+      text-decoration: none;
+      color: #007bff;
+      display: block;
+      margin-top: 20px;
+      font-weight: 500;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .messages {
+      color: green;
+      margin-top: 15px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>📰 Choose Your Favorite News Categories</h1>
+
+  {% if messages %}
+    <div class="messages">
+      {% for msg in messages %}
+        <p>{{ msg }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <label for="categories">Select Preferred Categories:</label>
+
+    <select name="categories" id="categories" multiple size="6">
+      {% for cat in categories %}
+        <option value="{{ cat }}" {% if cat in current_categories %}selected{% endif %}>
+          {{ cat|title }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <p style="font-size:13px; color:#666;">Hold <b>Ctrl</b> (or Cmd on Mac) to select multiple.</p>
+    <button type="submit">Save Preferences</button>
+  </form>
+
+  <a href="/">⬅ Back to Home</a>
+</body>
+</html>

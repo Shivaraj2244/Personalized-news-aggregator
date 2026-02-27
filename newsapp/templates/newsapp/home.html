@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Personalized News Aggregator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #007bff;
+      color: white;
+      padding: 15px 30px;
+    }
+    header a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      margin-left: 15px;
+    }
+    header a:hover {
+      text-decoration: underline;
+    }
+    .nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 15px;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      pointer-events: none; /* makes them non-clickable */
+    }
+    .nav span {
+      padding: 8px 15px;
+      background: #007bff;
+      color: white;
+      border-radius: 6px;
+      font-weight: 500;
+      display: inline-block;
+      transition: 0.2s ease;
+    }
+    .nav span:hover {
+      transform: scale(1.05);
+    }
+    .search-bar {
+      text-align: center;
+      margin: 20px;
+    }
+    .search-bar input[type="text"] {
+      width: 60%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .search-bar button {
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .search-bar button:hover {
+      background: #0056b3;
+    }
+    .news-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+      padding: 25px;
+      max-width: 1400px;
+      margin: auto;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .card-content {
+      padding: 15px;
+    }
+    .card h2 {
+      font-size: 1.1rem;
+      margin: 0 0 8px;
+      color: #222;
+    }
+    .card p {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 5px 0;
+      line-height: 1.5;
+    }
+    .card a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 8px;
+    }
+    .card a:hover {
+      text-decoration: underline;
+    }
+    .category-title {
+      text-align: center;
+      margin: 20px 0 0;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #333;
+    }
+    .messages {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .messages p {
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <div>🗞️ Personalized News Aggregator</div>
+    <div>
+      {% if request.user.is_authenticated %}
+        <span style="margin-right:15px;">👤 {{ request.user.username }}</span>
+        <a href="/preferences/">⚙ Preferences</a>
+        <a href="/logout/">🚪 Logout</a>
+      {% else %}
+        <a href="/login/">🔐 Login</a>
+        <a href="/register/">🆕 Register</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- MESSAGES -->
+  {% if messages %}
+    <div class="messages">
+      {% for msg in messages %}
+        <p>{{ msg }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- TITLE -->
+  <h2 class="category-title">
+    {% if categories %}
+      📰 Recommended News for You
+    {% else %}
+      📰 Latest News
+    {% endif %}
+  </h2>
+
+  <!-- PREFERENCES DISPLAY -->
+  <div class="nav">
+    {% if categories %}
+      {% for cat in categories %}
+        <span>{{ cat|title }}</span>
+      {% endfor %}
+    {% else %}
+      <span style="color:#555;">No preferences selected yet.</span>
+    {% endif %}
+  </div>
+
+  <!-- SEARCH BAR -->
+  <form method="get" action="/" class="search-bar">
+    <input type="text" name="q" placeholder="Search news..." value="{{ query }}">
+    <button type="submit">🔍 Search</button>
+  </form>
+
+  <!-- NEWS DISPLAY -->
+  <div class="news-container">
+    {% if news %}
+      {% for n in news %}
+        <div class="card">
+          <img src="{{ n.imageUrl|default:'https://via.placeholder.com/400x200?text=No+Image' }}" alt="News Image">
+          <div class="card-content">
+            <h2>{{ n.title }}</h2>
+            <p>{{ n.content|truncatewords:25 }}</p>
+            <p><b>Author:</b> {{ n.author|default:"Unknown" }}</p>
+            <a href="{{ n.readMoreUrl }}" target="_blank">Read More →</a>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h3 style="text-align:center;">⚠️ No news found for this search.</h3>
+    {% endif %}
+  </div>
+</body>
+</html>
